@@ -5,6 +5,7 @@ import { Button } from '@atoms/Button';
 import { Spacer } from '@atoms/Spacer';
 import { DataList } from '@organisms/DataList';
 import { ListItem } from '@molecules/ListItem';
+import { LanguageSwitcher } from '@molecules/LanguageSwitcher';
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
 import { fetchUsers } from '../store/slices/userSlice';
 import { User } from '../types';
@@ -30,16 +31,18 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text variant="h1">Home</Text>
+        <View style={styles.headerTop}>
+          <Text variant="h1" i18nKey="home.title" />
+          <LanguageSwitcher variant="compact" />
+        </View>
         <Spacer size="sm" />
-        <Text variant="body" color={Colors.textSecondary}>
-          Welcome to React Native Atomic Design
-        </Text>
+        <Text variant="body" color={Colors.textSecondary} i18nKey="home.welcome" />
         <Spacer size="md" />
         <Button
           onPress={() => navigation.navigate('Profile')}
           variant="outline"
-          size="small">
+          size="small"
+          i18nKey="home.goToProfile">
           Go to Profile
         </Button>
       </View>
@@ -74,6 +77,11 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: Spacing.md,
     paddingTop: Spacing.md,
+  },
+  headerTop: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });
 

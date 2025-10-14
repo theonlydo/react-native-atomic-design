@@ -702,7 +702,43 @@ MIT
 
 ---
 
-Dibuat dengan ❤️ menggunakan React Native, Atomic Design & Redux Toolkit
+## 🌍 Internationalization (i18n)
 
-Dibuat dengan ❤️ menggunakan React Native & Atomic Design
+This project includes **built-in multi-language support** using i18next!
+
+### Supported Languages
+- 🇬🇧 **English** (en)
+- 🇮🇩 **Indonesian** (id) - Default
+
+### Quick Usage
+
+```tsx
+// Text component - automatically translates
+<Text i18nKey="home.title" />
+<Button i18nKey="common.save" />
+
+// Disable translation for user data
+<Text translate={false}>{user.name}</Text>
+
+// Change language
+import { useTranslation } from 'react-i18next';
+const { i18n } = useTranslation();
+i18n.changeLanguage('en');
+
+// Use LanguageSwitcher component
+<LanguageSwitcher variant="compact" />
+```
+
+### Features
+- ✅ Automatic translation in Text & Button components (default: true)
+- ✅ Easy language switching with LanguageSwitcher component
+- ✅ Support for translation parameters
+- ✅ Organized translation files (EN/ID)
+- ✅ TypeScript support
+
+**📖 Complete guide:** See [I18N_GUIDE.md](./I18N_GUIDE.md) for detailed documentation.
+
+---
+
+Dibuat dengan ❤️ menggunakan React Native, Atomic Design, Redux Toolkit & i18next
 ```````

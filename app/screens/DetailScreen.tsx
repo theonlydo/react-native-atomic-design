@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { Text } from '@atoms/Text';
 import { Card } from '@atoms/Card';
 import { Spacer } from '@atoms/Spacer';
@@ -16,6 +17,7 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Detail'>;
 export const DetailScreen: React.FC<Props> = ({ route }) => {
   const { id } = route.params;
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const { selectedUser: user, loading, error } = useAppSelector(
     state => state.user,
   );
@@ -29,7 +31,7 @@ export const DetailScreen: React.FC<Props> = ({ route }) => {
   };
 
   if (loading) {
-    return <LoadingState message="Loading user details..." />;
+    return <LoadingState message={t('detail.loading')} />;
   }
 
   if (error) {
@@ -37,21 +39,19 @@ export const DetailScreen: React.FC<Props> = ({ route }) => {
   }
 
   if (!user) {
-    return <ErrorState message="User not found" onRetry={handleRetry} />;
+    return <ErrorState message={t('detail.notFound')} onRetry={handleRetry} />;
   }
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text variant="h2">User Details</Text>
+        <Text variant="h2" i18nKey="detail.userDetails" />
         <Spacer size="lg" />
 
         <Card>
-          <Text variant="caption" color={Colors.textSecondary}>
-            NAME
-          </Text>
+          <Text variant="caption" color={Colors.textSecondary} i18nKey="detail.name" />
           <Spacer size="xs" />
-          <Text variant="body" weight="medium">
+          <Text variant="body" weight="medium" translate={false}>
             {user.name}
           </Text>
         </Card>
@@ -59,11 +59,9 @@ export const DetailScreen: React.FC<Props> = ({ route }) => {
         <Spacer size="md" />
 
         <Card>
-          <Text variant="caption" color={Colors.textSecondary}>
-            EMAIL
-          </Text>
+          <Text variant="caption" color={Colors.textSecondary} i18nKey="detail.email" />
           <Spacer size="xs" />
-          <Text variant="body" weight="medium">
+          <Text variant="body" weight="medium" translate={false}>
             {user.email}
           </Text>
         </Card>
@@ -76,7 +74,7 @@ export const DetailScreen: React.FC<Props> = ({ route }) => {
                 USERNAME
               </Text>
               <Spacer size="xs" />
-              <Text variant="body" weight="medium">
+              <Text variant="body" weight="medium" translate={false}>
                 {user.username}
               </Text>
             </Card>
@@ -87,11 +85,9 @@ export const DetailScreen: React.FC<Props> = ({ route }) => {
           <>
             <Spacer size="md" />
             <Card>
-              <Text variant="caption" color={Colors.textSecondary}>
-                PHONE
-              </Text>
+              <Text variant="caption" color={Colors.textSecondary} i18nKey="detail.phone" />
               <Spacer size="xs" />
-              <Text variant="body" weight="medium">
+              <Text variant="body" weight="medium" translate={false}>
                 {user.phone}
               </Text>
             </Card>

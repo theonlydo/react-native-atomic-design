@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, View, Alert } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { Text } from '@atoms/Text';
 import { Card } from '@atoms/Card';
 import { Button } from '@atoms/Button';
 import { Spacer } from '@atoms/Spacer';
 import { LoginForm } from '@organisms/LoginForm';
+import { LanguageSwitcher } from '@molecules/LanguageSwitcher';
 import { Colors, Spacing } from '@constants';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '@types';
@@ -13,15 +15,16 @@ type Props = NativeStackScreenProps<RootStackParamList, 'Profile'>;
 
 export const ProfileScreen: React.FC<Props> = ({ navigation }) => {
     const [loading, setLoading] = useState(false);
+    const { t } = useTranslation();
 
-    const handleLogin = async (email: string, password: string) => {
+    const handleLogin = async (email: string, _password: string) => {
         setLoading(true);
         // Simulate API call
         setTimeout(() => {
             setLoading(false);
             Alert.alert(
-                'Login Successful',
-                `Email: ${email}\nPassword: ${password}`,
+                t('auth.loginSuccess'),
+                `${t('auth.email')}: ${email}`,
             );
         }, 2000);
     };
@@ -29,14 +32,28 @@ export const ProfileScreen: React.FC<Props> = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView contentContainerStyle={styles.content}>
-                <Text variant="h2">Profile</Text>
+                <View style={styles.headerRow}>
+                    <Text variant="h2" i18nKey="profile.title" />
+                    <LanguageSwitcher variant="compact" />
+                </View>
                 <Spacer size="md" />
 
                 <Card>
-                    <Text variant="body" color={Colors.textSecondary}>
-                        This is a demo profile screen with a login form example.
-                    </Text>
+                    <Text variant="h3" i18nKey="profile.userName" />
+                    <Spacer size="xs" />
+                    <Text variant="body" color={Colors.textSecondary} i18nKey="profile.userEmail" />
+                    <Spacer size="md" />
+                    <Button
+                        variant="outline"
+                        size="small"
+                        i18nKey="profile.editProfile">
+                        Edit Profile
+                    </Button>
                 </Card>
+
+                <Spacer size="lg" />
+
+                <LanguageSwitcher variant="expanded" />
 
                 <Spacer size="lg" />
 
@@ -47,7 +64,8 @@ export const ProfileScreen: React.FC<Props> = ({ navigation }) => {
                 <Button
                     onPress={() => navigation.goBack()}
                     variant="ghost"
-                    fullWidth>
+                    fullWidth
+                    i18nKey="common.back">
                     Back to Home
                 </Button>
             </ScrollView>
@@ -63,4 +81,10 @@ const styles = StyleSheet.create({
     content: {
         padding: Spacing.md,
     },
+    headerRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
 });
+

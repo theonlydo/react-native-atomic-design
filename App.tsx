@@ -10,6 +10,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Provider } from 'react-redux';
 import { store } from '@store';
 import { AppNavigator } from '@navigation';
+import './app/i18n'; // Initialize i18n
 
 function App(): React.JSX.Element {
   return (
@@ -23,3 +24,4 @@ function App(): React.JSX.Element {
 }
 
 export default App;
+

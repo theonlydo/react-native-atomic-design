@@ -1,0 +1,75 @@
+{
+  "common": {
+    "appName": "Atomic Design",
+    "loading": "Loading...",
+    "error": "Error",
+    "retry": "Retry",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "refresh": "Refresh",
+    "submit": "Submit",
+    "back": "Back",
+    "next": "Next",
+    "done": "Done"
+  },
+  "home": {
+    "title": "Home",
+    "welcome": "Welcome to React Native Atomic Design",
+    "goToProfile": "Go to Profile",
+    "noUsers": "No users found",
+    "userList": "User List"
+  },
+  "profile": {
+    "title": "Profile",
+    "userName": "John Doe",
+    "userEmail": "john.doe@example.com",
+    "editProfile": "Edit Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "about": "About",
+    "version": "Version 1.0.0"
+  },
+  "detail": {
+    "title": "Detail",
+    "userDetails": "User Details",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "website": "Website",
+    "loading": "Loading user details...",
+    "error": "Failed to load user details",
+    "notFound": "User not found"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "forgotPassword": "Forgot Password?",
+    "dontHaveAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "loginSuccess": "Login successful",
+    "loginError": "Login failed",
+    "registerSuccess": "Registration successful",
+    "registerError": "Registration failed"
+  },
+  "validation": {
+    "required": "This field is required",
+    "emailInvalid": "Invalid email format",
+    "passwordTooShort": "Password must be at least 8 characters",
+    "passwordsNotMatch": "Passwords do not match",
+    "phoneInvalid": "Invalid phone number"
+  },
+  "language": {
+    "title": "Language",
+    "english": "English",
+    "indonesian": "Indonesian",
+    "changeLanguage": "Change Language"
+  }
+}

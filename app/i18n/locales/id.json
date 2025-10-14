@@ -1,0 +1,75 @@
+{
+  "common": {
+    "appName": "Atomic Design",
+    "loading": "Memuat...",
+    "error": "Error",
+    "retry": "Coba Lagi",
+    "cancel": "Batal",
+    "confirm": "Konfirmasi",
+    "save": "Simpan",
+    "delete": "Hapus",
+    "edit": "Edit",
+    "search": "Cari",
+    "refresh": "Muat Ulang",
+    "submit": "Kirim",
+    "back": "Kembali",
+    "next": "Selanjutnya",
+    "done": "Selesai"
+  },
+  "home": {
+    "title": "Beranda",
+    "welcome": "Selamat datang di React Native Atomic Design",
+    "goToProfile": "Ke Profil",
+    "noUsers": "Tidak ada pengguna",
+    "userList": "Daftar Pengguna"
+  },
+  "profile": {
+    "title": "Profil",
+    "userName": "John Doe",
+    "userEmail": "john.doe@example.com",
+    "editProfile": "Edit Profil",
+    "settings": "Pengaturan",
+    "logout": "Keluar",
+    "about": "Tentang",
+    "version": "Versi 1.0.0"
+  },
+  "detail": {
+    "title": "Detail",
+    "userDetails": "Detail Pengguna",
+    "name": "Nama",
+    "email": "Email",
+    "phone": "Telepon",
+    "website": "Website",
+    "loading": "Memuat detail pengguna...",
+    "error": "Gagal memuat detail pengguna",
+    "notFound": "Pengguna tidak ditemukan"
+  },
+  "auth": {
+    "login": "Masuk",
+    "register": "Daftar",
+    "logout": "Keluar",
+    "email": "Email",
+    "password": "Kata Sandi",
+    "confirmPassword": "Konfirmasi Kata Sandi",
+    "forgotPassword": "Lupa Kata Sandi?",
+    "dontHaveAccount": "Belum punya akun?",
+    "alreadyHaveAccount": "Sudah punya akun?",
+    "loginSuccess": "Login berhasil",
+    "loginError": "Login gagal",
+    "registerSuccess": "Pendaftaran berhasil",
+    "registerError": "Pendaftaran gagal"
+  },
+  "validation": {
+    "required": "Field ini wajib diisi",
+    "emailInvalid": "Format email tidak valid",
+    "passwordTooShort": "Kata sandi minimal 8 karakter",
+    "passwordsNotMatch": "Kata sandi tidak cocok",
+    "phoneInvalid": "Nomor telepon tidak valid"
+  },
+  "language": {
+    "title": "Bahasa",
+    "english": "Inggris",
+    "indonesian": "Indonesia",
+    "changeLanguage": "Ganti Bahasa"
+  }
+}
