@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
 import { Text } from '@atoms/Text';
-import { Button } from '@atoms/Button';
 import { Spacer } from '@atoms/Spacer';
 import { DataList } from '@organisms/DataList';
 import { ListItem } from '@molecules/ListItem';
@@ -11,10 +10,10 @@ import { fetchUsers } from '../store/slices/userSlice';
 import { User } from '../types';
 import { Colors } from '../constants/colors';
 import { Spacing } from '../constants/spacing';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { RootStackParamList } from '../types';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Home'>;
+type Props = BottomTabScreenProps<RootStackParamList, 'Home'>;
 
 export const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const dispatch = useAppDispatch();
@@ -37,14 +36,6 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
         </View>
         <Spacer size="sm" />
         <Text variant="body" color={Colors.textSecondary} i18nKey="home.welcome" />
-        <Spacer size="md" />
-        <Button
-          onPress={() => navigation.navigate('Profile')}
-          variant="outline"
-          size="small"
-          i18nKey="home.goToProfile">
-          Go to Profile
-        </Button>
       </View>
 
       <Spacer size="md" />

@@ -9,13 +9,14 @@ import { ErrorState } from '@molecules/ErrorState';
 import { useAppDispatch, useAppSelector } from '@hooks';
 import { fetchUserById } from '@store/slices/userSlice';
 import { Colors, Spacing } from '@constants';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { RootStackParamList } from '@types';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'Detail'>;
+type Props = BottomTabScreenProps<RootStackParamList, 'Detail'>;
 
 export const DetailScreen: React.FC<Props> = ({ route }) => {
-  const { id } = route.params;
+  // Default to user id 1 if no id is provided (for tab navigation)
+  const { id = 1 } = route.params || {};
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const { selectedUser: user, loading, error } = useAppSelector(
@@ -23,11 +24,15 @@ export const DetailScreen: React.FC<Props> = ({ route }) => {
   );
 
   useEffect(() => {
-    dispatch(fetchUserById(id));
+    if (id) {
+      dispatch(fetchUserById(id));
+    }
   }, [dispatch, id]);
 
   const handleRetry = () => {
-    dispatch(fetchUserById(id));
+    if (id) {
+      dispatch(fetchUserById(id));
+    }
   };
 
   if (loading) {

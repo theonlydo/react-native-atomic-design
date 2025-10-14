@@ -28,6 +28,6 @@ export interface ApiError {
 
 export type RootStackParamList = {
   Home: undefined;
-  Detail: { id: number };
+  Detail: { id?: number }; // Make id optional for tab navigation
   Profile: undefined;
 };

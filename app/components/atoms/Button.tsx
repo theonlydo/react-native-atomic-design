@@ -1,11 +1,11 @@
 import React from 'react';
 import {
-    TouchableOpacity,
-    Text,
-    StyleSheet,
-    ActivityIndicator,
-    TouchableOpacityProps,
-    ViewStyle,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacityProps,
+  ViewStyle,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Colors, Spacing, BorderRadius, FontSize } from '@constants';
