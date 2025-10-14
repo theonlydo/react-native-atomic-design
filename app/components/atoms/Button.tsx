@@ -1,16 +1,14 @@
 import React from 'react';
 import {
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-  TouchableOpacityProps,
-  ViewStyle,
-  TextStyle,
+    TouchableOpacity,
+    Text,
+    StyleSheet,
+    ActivityIndicator,
+    TouchableOpacityProps,
+    ViewStyle,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Colors, Spacing, BorderRadius, FontSize } from '@constants';
-
 interface ButtonProps extends TouchableOpacityProps {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
   size?: 'small' | 'medium' | 'large';

@@ -15,7 +15,6 @@ i18n.use(initReactI18next).init({
   interpolation: {
     escapeValue: false, // react already safes from xss
   },
-  compatibilityJSON: 'v3', // for React Native
 });
 
 export default i18n;
