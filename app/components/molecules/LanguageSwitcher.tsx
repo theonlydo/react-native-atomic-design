@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import { Text } from '@atoms/Text';
 import { Colors, Spacing, BorderRadius } from '@constants';
+import { selectLanguage, setLanguage, type Language } from '@store/slices/configSlice';
+import type { AppDispatch } from '@store';
 
 interface LanguageSwitcherProps {
   variant?: 'compact' | 'expanded';
@@ -12,12 +15,20 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   variant = 'compact',
 }) => {
   const { i18n } = useTranslation();
+  const dispatch = useDispatch<AppDispatch>();
+  const currentLanguage = useSelector(selectLanguage);
 
-  const changeLanguage = (lang: string) => {
+  // Sync i18n dengan Redux store saat mount
+  useEffect(() => {
+    if (i18n.language !== currentLanguage) {
+      i18n.changeLanguage(currentLanguage);
+    }
+  }, [currentLanguage, i18n]);
+
+  const changeLanguage = (lang: Language) => {
+    dispatch(setLanguage(lang));
     i18n.changeLanguage(lang);
   };
-
-  const currentLanguage = i18n.language;
 
   if (variant === 'compact') {
     return (

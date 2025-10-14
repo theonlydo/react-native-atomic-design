@@ -1,20 +1,44 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { persistStore, persistReducer } from 'redux-persist';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { combineReducers } from '@reduxjs/toolkit';
 import { userReducer, postReducer, authReducer } from './slices';
+import configReducer from './slices/configSlice';
+
+// Konfigurasi persist untuk config slice
+const persistConfig = {
+  key: 'root',
+  storage: AsyncStorage,
+  whitelist: ['config'], // Hanya persist config slice
+};
+
+const rootReducer = combineReducers({
+  user: userReducer,
+  post: postReducer,
+  auth: authReducer,
+  config: configReducer,
+});
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: {
-    user: userReducer,
-    post: postReducer,
-    auth: authReducer,
-  },
+  reducer: persistedReducer,
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: {
-        // Ignore these action types
-        ignoredActions: ['persist/PERSIST'],
+        // Ignore redux-persist actions
+        ignoredActions: [
+          'persist/PERSIST',
+          'persist/REHYDRATE',
+          'persist/PAUSE',
+          'persist/PURGE',
+          'persist/REGISTER',
+        ],
       },
     }),
 });
+
+export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

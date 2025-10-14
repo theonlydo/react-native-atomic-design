@@ -1,6 +1,7 @@
 export { default as userReducer } from './userSlice';
 export { default as postReducer } from './postSlice';
 export { default as authReducer } from './authSlice';
+export { default as configReducer } from './configSlice';
 
 // Re-export async thunks and actions
 export {
@@ -33,3 +34,14 @@ export {
   login,
   logout,
 } from './authSlice';
+
+export {
+  // Config actions
+  setLanguage,
+  setTheme,
+  resetConfig,
+  // Config selectors
+  selectLanguage,
+  selectTheme,
+  selectConfig,
+} from './configSlice';
