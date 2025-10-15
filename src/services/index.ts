@@ -81,3 +81,6 @@ export const postService = {
     return apiClient.delete(`/posts/${id}`);
   },
 };
+
+// Export apiClient untuk digunakan langsung jika diperlukan
+export { apiClient } from './api';

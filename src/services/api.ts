@@ -6,6 +6,7 @@ import axios, {
 } from 'axios';
 import { API_BASE_URL, API_TIMEOUT } from '@constants';
 import { ApiError } from '@types';
+import { store } from '../store';
 
 class ApiClient {
   private client: AxiosInstance;
@@ -26,11 +27,11 @@ class ApiClient {
     // Request interceptor
     this.client.interceptors.request.use(
       config => {
-        // Add auth token if available
-        // const token = await getAuthToken();
-        // if (token) {
-        //   config.headers.Authorization = `Bearer ${token}`;
-        // }
+        // Get token directly from Redux store
+        const token = store.getState().auth.token;
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
         console.log('Request:', config.method?.toUpperCase(), config.url);
         return config;
       },
