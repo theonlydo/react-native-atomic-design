@@ -1,10 +1,6 @@
 import React, { useEffect } from 'react';
 import { SafeAreaView, StyleSheet, View } from 'react-native';
-import { Text } from '@atoms/Text';
-import { Spacer } from '@atoms/Spacer';
-import { DataList } from '@organisms/DataList';
-import { ListItem } from '@molecules/ListItem';
-import { LanguageSwitcher } from '@molecules/LanguageSwitcher';
+import { Text, Spacer, DataList, ListItem, LanguageSwitcher } from '@components';
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
 import { fetchUsers } from '../store/reducer/userSlice';
 import { User } from '../types';

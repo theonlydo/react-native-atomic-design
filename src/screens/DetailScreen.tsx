@@ -1,11 +1,7 @@
 import React, { useEffect } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Text } from '@atoms/Text';
-import { Card } from '@atoms/Card';
-import { Spacer } from '@atoms/Spacer';
-import { LoadingState } from '@molecules/LoadingState';
-import { ErrorState } from '@molecules/ErrorState';
+import { Text, Card, Spacer, LoadingState, ErrorState } from '@components';
 import { useAppDispatch, useAppSelector } from '@hooks';
 import { fetchUserById } from '@store/reducer/userSlice';
 import { Colors, Spacing } from '@constants';

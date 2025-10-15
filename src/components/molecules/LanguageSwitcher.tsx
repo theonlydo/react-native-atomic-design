@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { Text } from '@atoms/Text';
+import { Text } from '@components';
 import { Colors, Spacing, BorderRadius } from '@constants';
 import { selectLanguage, setLanguage } from '@store/reducer/configSlice';
 import { Language } from '@types';

@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
-import { Text } from '@atoms/Text';
-import { Spacer } from '@atoms/Spacer';
+import { Text, Spacer } from '@components';
 import { Colors } from '@constants';
 
 interface LoadingStateProps {

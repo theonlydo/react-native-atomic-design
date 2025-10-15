@@ -1,8 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { Card } from '@atoms/Card';
-import { Text } from '@atoms/Text';
-import { Spacer } from '@atoms/Spacer';
+import { Card, Text, Spacer } from '@components';
 import { Colors, Spacing } from '@constants';
 
 interface ListItemProps {

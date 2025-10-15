@@ -9,10 +9,6 @@ module.exports = {
         alias: {
           '@app': './src',
           '@components': './src/components',
-          '@atoms': './src/components/atoms',
-          '@molecules': './src/components/molecules',
-          '@organisms': './src/components/organisms',
-          '@templates': './src/components/templates',
           '@screens': './src/screens',
           '@navigation': './src/navigation',
           '@utils': './src/utils',

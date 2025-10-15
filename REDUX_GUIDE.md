@@ -231,9 +231,7 @@ import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { useAppDispatch, useAppSelector } from '@hooks';
 import { fetchUsers } from '@store/slices/userSlice';
-import { LoadingState } from '@molecules/LoadingState';
-import { ErrorState } from '@molecules/ErrorState';
-import { DataList } from '@organisms/DataList';
+import { LoadingState, ErrorState, DataList } from '@components';
 
 export const UserListScreen = () => {
   const dispatch = useAppDispatch();

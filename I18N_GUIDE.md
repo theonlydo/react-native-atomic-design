@@ -62,7 +62,7 @@ i18n.use(initReactI18next).init({
 The `Text` component automatically translates by default:
 
 ```tsx
-import { Text } from '@atoms/Text';
+import { Text } from '@components';
 
 // Method 1: Using i18nKey prop (Recommended)
 <Text i18nKey="home.title" />
@@ -85,7 +85,7 @@ import { Text } from '@atoms/Text';
 The `Button` component also supports automatic translation:
 
 ```tsx
-import { Button } from '@atoms/Button';
+import { Button } from '@components';
 
 // Method 1: Using i18nKey
 <Button i18nKey="common.save" onPress={handleSave} />
@@ -208,7 +208,7 @@ The `LanguageSwitcher` component provides UI for changing languages:
 ### Compact Variant (for headers/toolbars)
 
 ```tsx
-import { LanguageSwitcher } from '@molecules/LanguageSwitcher';
+import { LanguageSwitcher } from '@components';
 
 <LanguageSwitcher variant="compact" />;
 ```

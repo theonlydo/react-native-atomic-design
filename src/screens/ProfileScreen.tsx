@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, View, Alert } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Text } from '@atoms/Text';
-import { Card } from '@atoms/Card';
-import { Button } from '@atoms/Button';
-import { Spacer } from '@atoms/Spacer';
-import { LoginForm } from '@organisms/LoginForm';
-import { LanguageSwitcher } from '@molecules/LanguageSwitcher';
+import { Text, Card, Button, Spacer, LoginForm, LanguageSwitcher } from '@components';
 import { Colors, Spacing } from '@constants';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { RootStackParamList } from '@types';
