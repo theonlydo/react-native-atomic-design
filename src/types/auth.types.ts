@@ -1,14 +1,10 @@
 /**
  * Auth State Types
- * Interface untuk state management autentikasi
+ * Interface untuk state management autentikasi (tokens only)
  */
 
 export interface AuthState {
-  isAuthenticated: boolean;
-  user: {
-    id: number;
-    email: string;
-    name: string;
-  } | null;
   token: string | null;
+  refreshToken: string | null;
+  isAuthenticated: boolean;
 }

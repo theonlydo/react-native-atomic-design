@@ -1,28 +1,44 @@
-import React, { useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, View, Alert } from 'react-native';
+import React from 'react';
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  View,
+  Alert,
+  TouchableOpacity,
+} from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Text, Card, Button, Spacer, LoginForm, LanguageSwitcher } from '@components';
+import { Text, Card, Spacer, LanguageSwitcher } from '@components';
 import { Colors, Spacing } from '@constants';
 import { Config, isDevelopment } from '@config';
-import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { RootStackParamList } from '@types';
+import { useAppDispatch, useAppSelector } from '@hooks';
+import { clearTokens } from '@store/reducer/authSlice';
+import { clearCurrentUser } from '@store/reducer/userSlice';
 
-type Props = BottomTabScreenProps<RootStackParamList, 'Profile'>;
-
-export const ProfileScreen: React.FC<Props> = () => {
-  const [loading, setLoading] = useState(false);
+export const ProfileScreen: React.FC = () => {
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+  const { currentUser } = useAppSelector(state => state.user);
 
-  const handleLogin = async (email: string, _password: string) => {
-    setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
-      Alert.alert(
-        t('auth.loginSuccess'),
-        `${t('auth.email')}: ${email}`,
-      );
-    }, 2000);
+  const handleLogout = () => {
+    Alert.alert(t('auth.logout'), 'Are you sure you want to logout?', [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      {
+        text: 'Logout',
+        style: 'destructive',
+        onPress: () => {
+          dispatch(clearTokens());
+          dispatch(clearCurrentUser());
+        },
+      },
+    ]);
+  };
+
+  const handleEditProfile = () => {
+    Alert.alert('Edit Profile', 'Feature coming soon!');
   };
 
   return (
@@ -34,17 +50,38 @@ export const ProfileScreen: React.FC<Props> = () => {
         </View>
         <Spacer size="md" />
 
+        {/* Profile Card */}
         <Card>
-          <Text variant="h3" i18nKey="profile.userName" />
-          <Spacer size="xs" />
-          <Text variant="body" color={Colors.textSecondary} i18nKey="profile.userEmail" />
+          <View style={styles.profileHeader}>
+            <View style={styles.avatar}>
+              <Text style={styles.avatarText}>
+                {currentUser?.name?.charAt(0) || '👤'}
+              </Text>
+            </View>
+            <View style={styles.profileInfo}>
+              <Text variant="h3">{currentUser?.name || 'User Name'}</Text>
+              <Spacer size="xs" />
+              <Text variant="body" color={Colors.textSecondary}>
+                {currentUser?.email || 'user@example.com'}
+              </Text>
+              {currentUser?.phone && (
+                <>
+                  <Spacer size="xs" />
+                  <Text variant="caption" color={Colors.textSecondary}>
+                    📞 {currentUser.phone}
+                  </Text>
+                </>
+              )}
+            </View>
+          </View>
+
           <Spacer size="md" />
-          <Button
-            variant="outline"
-            size="small"
-            i18nKey="profile.editProfile">
-            Edit Profile
-          </Button>
+
+          <TouchableOpacity
+            style={styles.editButton}
+            onPress={handleEditProfile}>
+            <Text style={styles.editButtonText}>✏️ Edit Profile</Text>
+          </TouchableOpacity>
         </Card>
 
         <Spacer size="lg" />
@@ -75,11 +112,15 @@ export const ProfileScreen: React.FC<Props> = () => {
           </>
         )}
 
+        {/* Language Switcher */}
         <LanguageSwitcher variant="expanded" />
 
         <Spacer size="lg" />
 
-        <LoginForm onSubmit={handleLogin} loading={loading} />
+        {/* Logout Button */}
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+          <Text style={styles.logoutButtonText}>🚪 Logout</Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -98,5 +139,48 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  profileHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  avatar: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: Colors.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: Spacing.md,
+  },
+  avatarText: {
+    fontSize: 32,
+    color: Colors.white,
+  },
+  profileInfo: {
+    flex: 1,
+  },
+  editButton: {
+    backgroundColor: Colors.background,
+    borderWidth: 1,
+    borderColor: Colors.border,
+    padding: Spacing.sm,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  editButtonText: {
+    fontSize: 14,
+    color: Colors.text,
+    fontWeight: '600',
+  },
+  logoutButton: {
+    backgroundColor: Colors.error,
+    padding: Spacing.md,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  logoutButtonText: {
+    color: Colors.white,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
-

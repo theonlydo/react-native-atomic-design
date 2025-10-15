@@ -1,8 +1,9 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { User, UserState } from '@types';
 import { userService } from '@services';
 
 const initialState: UserState = {
+  currentUser: null,
   users: [],
   selectedUser: null,
   loading: false,
@@ -51,6 +52,17 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    setCurrentUser: (state, action: PayloadAction<User>) => {
+      state.currentUser = action.payload;
+    },
+    updateCurrentUser: (state, action: PayloadAction<Partial<User>>) => {
+      if (state.currentUser) {
+        state.currentUser = { ...state.currentUser, ...action.payload };
+      }
+    },
+    clearCurrentUser: state => {
+      state.currentUser = null;
+    },
     clearSelectedUser: state => {
       state.selectedUser = null;
     },
@@ -122,5 +134,11 @@ const userSlice = createSlice({
   },
 });
 
-export const { clearSelectedUser, clearError } = userSlice.actions;
+export const {
+  setCurrentUser,
+  updateCurrentUser,
+  clearCurrentUser,
+  clearSelectedUser,
+  clearError,
+} = userSlice.actions;
 export default userSlice.reducer;
