@@ -7,6 +7,12 @@ import axios, {
 import { Config } from '@config';
 import { ApiError, ApiResponse } from '@types';
 import { store } from '../store';
+import { startNetworkLogging } from 'react-native-network-logger';
+
+// Start network logging in development mode
+if (Config.enableLogging) {
+  startNetworkLogging();
+}
 
 class ApiClient {
   private client: AxiosInstance;
