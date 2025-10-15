@@ -82,5 +82,9 @@ export const postService = {
   },
 };
 
+// Export new API services
+export { authApi } from './auth.service';
+export { contactApi } from './contact.service';
+
 // Export apiClient untuk digunakan langsung jika diperlukan
 export { apiClient } from './api';

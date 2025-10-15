@@ -35,6 +35,7 @@ export type RootStackParamList = {
 
 // Export Redux state types
 export * from './auth.types';
+export * from './contact.types';
 export * from './user.types';
 export * from './post.types';
 export * from './config.types';
