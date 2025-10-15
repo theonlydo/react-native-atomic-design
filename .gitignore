@@ -73,3 +73,12 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# Environment files - contains sensitive data
+.env
+.env.local
+.env.*.local
+
+# Keep template files
+!.env.dev
+!.env.prod

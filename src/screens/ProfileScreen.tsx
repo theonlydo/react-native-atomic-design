@@ -3,6 +3,7 @@ import { SafeAreaView, ScrollView, StyleSheet, View, Alert } from 'react-native'
 import { useTranslation } from 'react-i18next';
 import { Text, Card, Button, Spacer, LoginForm, LanguageSwitcher } from '@components';
 import { Colors, Spacing } from '@constants';
+import { Config, isDevelopment } from '@config';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { RootStackParamList } from '@types';
 
@@ -47,6 +48,32 @@ export const ProfileScreen: React.FC<Props> = () => {
         </Card>
 
         <Spacer size="lg" />
+
+        {/* Environment Info Card - Show in Development */}
+        {isDevelopment() && (
+          <>
+            <Card>
+              <Text variant="h3">🔧 Environment Info</Text>
+              <Spacer size="sm" />
+              <Text variant="caption" color={Colors.textSecondary}>
+                App: {Config.appName} v{Config.appVersion}
+              </Text>
+              <Text variant="caption" color={Colors.textSecondary}>
+                Environment: {Config.environment}
+              </Text>
+              <Text variant="caption" color={Colors.textSecondary}>
+                API: {Config.apiBaseUrl}
+              </Text>
+              <Text variant="caption" color={Colors.textSecondary}>
+                Logging: {Config.enableLogging ? '✅' : '❌'}
+              </Text>
+              <Text variant="caption" color={Colors.textSecondary}>
+                Debug Mode: {Config.enableDebugMode ? '✅' : '❌'}
+              </Text>
+            </Card>
+            <Spacer size="lg" />
+          </>
+        )}
 
         <LanguageSwitcher variant="expanded" />
 

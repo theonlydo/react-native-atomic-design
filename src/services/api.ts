@@ -4,7 +4,7 @@ import axios, {
   AxiosResponse,
   AxiosError,
 } from 'axios';
-import { API_BASE_URL, API_TIMEOUT } from '@constants';
+import { Config } from '@config';
 import { ApiError, ApiResponse } from '@types';
 import { store } from '../store';
 
@@ -13,8 +13,8 @@ class ApiClient {
 
   constructor() {
     this.client = axios.create({
-      baseURL: API_BASE_URL,
-      timeout: API_TIMEOUT,
+      baseURL: Config.apiBaseUrl,
+      timeout: Config.apiTimeout,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -32,11 +32,17 @@ class ApiClient {
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
-        console.log('Request:', config.method?.toUpperCase(), config.url);
+
+        // Log only in development
+        if (Config.enableLogging) {
+          console.log('Request:', config.method?.toUpperCase(), config.url);
+        }
         return config;
       },
       error => {
-        console.error('Request Error:', error);
+        if (Config.enableLogging) {
+          console.error('Request Error:', error);
+        }
         return Promise.reject(error);
       },
     );
@@ -44,7 +50,9 @@ class ApiClient {
     // Response interceptor
     this.client.interceptors.response.use(
       (response: AxiosResponse<ApiResponse>) => {
-        console.log('Response:', response.status, response.config.url);
+        if (Config.enableLogging) {
+          console.log('Response:', response.status, response.config.url);
+        }
 
         // Extract data from wrapper response
         const wrappedData = response.data;

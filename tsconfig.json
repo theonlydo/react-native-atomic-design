@@ -33,6 +33,8 @@
       "@hooks/*": ["./src/hooks/*"],
       "@constants": ["./src/constants"],
       "@constants/*": ["./src/constants/*"],
+      "@config": ["./src/config"],
+      "@config/*": ["./src/config/*"],
       "@assets": ["./src/assets"],
       "@assets/*": ["./src/assets/*"],
       "@store": ["./src/store"],

@@ -4,9 +4,17 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "android:dev": "cp .env.dev .env && react-native run-android",
+    "android:prod": "cp .env.prod .env && react-native run-android --mode=release",
     "ios": "react-native run-ios",
+    "ios:dev": "cp .env.dev .env && react-native run-ios --mode=Debug",
+    "ios:prod": "cp .env.prod .env && react-native run-ios --mode=Release",
+    "env:dev": "cp .env.dev .env",
+    "env:prod": "cp .env.prod .env",
     "lint": "eslint .",
     "start": "react-native start",
+    "start:dev": "cp .env.dev .env && react-native start",
+    "start:prod": "cp .env.prod .env && react-native start",
     "test": "jest"
   },
   "dependencies": {

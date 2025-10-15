@@ -2,6 +2,6 @@
 export { Colors } from './colors';
 export { Spacing, BorderRadius, FontSize, FontWeight } from './spacing';
 
-// API constants
-export const API_BASE_URL = 'https://jsonplaceholder.typicode.com';
-export const API_TIMEOUT = 30000;
+// Note: API constants moved to @config/env.ts
+// Use: import { Config } from '@config';
+// Then: Config.apiBaseUrl, Config.apiTimeout
