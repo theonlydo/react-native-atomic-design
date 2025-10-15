@@ -13,9 +13,9 @@ fi
 
 if [ "$ENV" == "dev" ]; then
   echo "🔄 Switching to DEVELOPMENT environment..."
-  cp .env.dev .env
+  cp env/.env.dev env/.env
   echo "✅ Environment switched to DEVELOPMENT"
-  echo "📝 Config: .env.dev → .env"
+  echo "📝 Config: env/.env.dev → env/.env"
   echo ""
   echo "Next steps:"
   echo "  npm run start    # Start Metro bundler"
@@ -23,9 +23,9 @@ if [ "$ENV" == "dev" ]; then
   echo "  npm run ios      # Run on iOS"
 elif [ "$ENV" == "prod" ]; then
   echo "🔄 Switching to PRODUCTION environment..."
-  cp .env.prod .env
+  cp env/.env.prod env/.env
   echo "✅ Environment switched to PRODUCTION"
-  echo "📝 Config: .env.prod → .env"
+  echo "📝 Config: env/.env.prod → env/.env"
   echo ""
   echo "⚠️  WARNING: You are now in PRODUCTION mode!"
   echo "Next steps:"

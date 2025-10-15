@@ -8,9 +8,10 @@ Project ini menggunakan sistem environment configuration yang fleksibel untuk me
 
 ```
 atomic/
-├── .env              # Active environment (git-ignored)
-├── .env.dev          # Development configuration
-├── .env.prod         # Production configuration
+├── env/
+│   ├── .env          # Active environment (git-ignored)
+│   ├── .env.dev      # Development configuration
+│   └── .env.prod     # Production configuration
 └── src/
     └── config/
         ├── env.ts    # Environment config module
@@ -19,7 +20,7 @@ atomic/
 
 ## 🎯 Environment Files
 
-### `.env.dev` - Development Environment
+### `env/.env.dev` - Development Environment
 
 ```env
 APP_ENV=development
@@ -48,6 +49,8 @@ SENTRY_DSN=https://your-sentry-dsn@sentry.io/project-id
 APP_NAME=Atomic
 APP_VERSION=1.0.0
 ```
+
+> **Note:** File ini berada di `env/.env.prod`
 
 ## 🚀 Usage
 
@@ -115,10 +118,10 @@ npm run ios:prod       # Run iOS with prod environment
 
 ```bash
 # Switch to development
-cp .env.dev .env
+cp env/.env.dev env/.env
 
 # Switch to production
-cp .env.prod .env
+cp env/.env.prod env/.env
 ```
 
 ### Method 3: Edit src/config/env.ts
@@ -261,7 +264,7 @@ const API_KEY = Config.analyticsKey;
 
 ### Step 1: Update Environment Files
 
-Edit `.env.dev` dan `.env.prod`:
+Edit `env/.env.dev` dan `env/.env.prod`:
 
 ```env
 # Add new config
@@ -346,7 +349,7 @@ npm run ios:prod
 
 ### Config not updating?
 
-1. Make sure you copied the correct `.env` file
+1. Make sure you copied the correct `env/.env` file
 2. Restart Metro bundler: `npm run start -- --reset-cache`
 3. Rebuild the app completely
 
@@ -367,8 +370,8 @@ This ensures:
 
 - `src/config/env.ts` - Environment configuration module
 - `src/services/api.ts` - API client using environment config
-- `.env.dev` - Development environment variables
-- `.env.prod` - Production environment variables
+- `env/.env.dev` - Development environment variables
+- `env/.env.prod` - Production environment variables
 - `package.json` - NPM scripts for environment switching
 
 ## 📝 Notes
@@ -377,3 +380,4 @@ This ensures:
 - Environment detection otomatis menggunakan `__DEV__` flag dari React Native
 - Config di-load saat aplikasi start, perubahan memerlukan restart
 - Logging hanya aktif di development mode untuk performa yang lebih baik
+- Semua file environment disimpan di folder `env/` untuk organisasi yang lebih baik

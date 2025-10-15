@@ -30,9 +30,9 @@ npm run ios:prod
 
 ## 📝 Configuration Files
 
-- `.env.dev` - Development settings
-- `.env.prod` - Production settings
-- `.env` - Active environment (auto-generated, git-ignored)
+- `env/.env.dev` - Development settings
+- `env/.env.prod` - Production settings
+- `env/.env` - Active environment (auto-generated, git-ignored)
 
 ## 💻 Usage in Code
 
@@ -67,13 +67,13 @@ See [ENV_CONFIG_GUIDE.md](./ENV_CONFIG_GUIDE.md) for complete documentation.
 
 ## 🔒 Security
 
-- Never commit `.env` with real credentials
-- Use placeholder values in `.env.dev` and `.env.prod`
+- Never commit `env/.env` with real credentials
+- Use placeholder values in `env/.env.dev` and `env/.env.prod`
 - Set production values in CI/CD or manually
 
 ## ⚙️ Adding New Config
 
-1. Add to `.env.dev` and `.env.prod`
+1. Add to `env/.env.dev` and `env/.env.prod`
 2. Update `EnvironmentConfig` interface in `src/config/env.ts`
 3. Add to `developmentConfig` and `productionConfig` objects
 4. Use with `import { Config } from '@config'`
