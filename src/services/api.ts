@@ -5,7 +5,7 @@ import axios, {
   AxiosError,
 } from 'axios';
 import { API_BASE_URL, API_TIMEOUT } from '@constants';
-import { ApiError } from '@types';
+import { ApiError, ApiResponse } from '@types';
 import { store } from '../store';
 
 class ApiClient {
@@ -43,11 +43,36 @@ class ApiClient {
 
     // Response interceptor
     this.client.interceptors.response.use(
-      (response: AxiosResponse) => {
+      (response: AxiosResponse<ApiResponse>) => {
         console.log('Response:', response.status, response.config.url);
+
+        // Extract data from wrapper response
+        const wrappedData = response.data;
+
+        // Check if response follows the standard format
+        if (
+          wrappedData &&
+          typeof wrappedData === 'object' &&
+          'data' in wrappedData
+        ) {
+          // Standard API response format: {status, status_code, message, data}
+          if (wrappedData.status === 0) {
+            // Handle API-level error (business logic error)
+            const apiError: ApiError = {
+              message: wrappedData.message || 'API error occurred',
+              status: wrappedData.status_code,
+            };
+            console.error('API Error:', apiError);
+            return Promise.reject(apiError);
+          }
+          // Return only the data part for success responses (status === 1)
+          return { ...response, data: wrappedData.data } as any;
+        }
+
+        // If not wrapped, return as-is (for backward compatibility)
         return response;
       },
-      (error: AxiosError) => {
+      (error: AxiosError<ApiResponse>) => {
         const apiError: ApiError = {
           message: error.message,
           status: error.response?.status,
@@ -56,9 +81,20 @@ class ApiClient {
 
         if (error.response) {
           // Server responded with error
-          apiError.message =
-            (error.response.data as any)?.message || 'Server error occurred';
-          apiError.status = error.response.status;
+          const errorData = error.response.data;
+
+          // Check if error follows standard format
+          if (
+            errorData &&
+            typeof errorData === 'object' &&
+            'message' in errorData
+          ) {
+            apiError.message = errorData.message;
+            apiError.status = errorData.status_code || error.response.status;
+          } else {
+            apiError.message = 'Server error occurred';
+            apiError.status = error.response.status;
+          }
 
           if (error.response.status === 401) {
             // Handle unauthorized - redirect to login
@@ -82,8 +118,8 @@ class ApiClient {
   }
 
   public async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    const response = await this.client.get<T>(url, config);
-    return response.data;
+    const response = await this.client.get<ApiResponse<T>>(url, config);
+    return response.data as T;
   }
 
   public async post<T>(
@@ -91,8 +127,8 @@ class ApiClient {
     data?: any,
     config?: AxiosRequestConfig,
   ): Promise<T> {
-    const response = await this.client.post<T>(url, data, config);
-    return response.data;
+    const response = await this.client.post<ApiResponse<T>>(url, data, config);
+    return response.data as T;
   }
 
   public async put<T>(
@@ -100,8 +136,8 @@ class ApiClient {
     data?: any,
     config?: AxiosRequestConfig,
   ): Promise<T> {
-    const response = await this.client.put<T>(url, data, config);
-    return response.data;
+    const response = await this.client.put<ApiResponse<T>>(url, data, config);
+    return response.data as T;
   }
 
   public async patch<T>(
@@ -109,13 +145,13 @@ class ApiClient {
     data?: any,
     config?: AxiosRequestConfig,
   ): Promise<T> {
-    const response = await this.client.patch<T>(url, data, config);
-    return response.data;
+    const response = await this.client.patch<ApiResponse<T>>(url, data, config);
+    return response.data as T;
   }
 
   public async delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    const response = await this.client.delete<T>(url, config);
-    return response.data;
+    const response = await this.client.delete<ApiResponse<T>>(url, config);
+    return response.data as T;
   }
 }
 

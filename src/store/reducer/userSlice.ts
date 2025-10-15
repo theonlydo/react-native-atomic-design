@@ -1,13 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { User } from '@types';
+import { User, UserState } from '@types';
 import { userService } from '@services';
-
-interface UserState {
-  users: User[];
-  selectedUser: User | null;
-  loading: boolean;
-  error: string | null;
-}
 
 const initialState: UserState = {
   users: [],

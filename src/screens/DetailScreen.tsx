@@ -7,7 +7,7 @@ import { Spacer } from '@atoms/Spacer';
 import { LoadingState } from '@molecules/LoadingState';
 import { ErrorState } from '@molecules/ErrorState';
 import { useAppDispatch, useAppSelector } from '@hooks';
-import { fetchUserById } from '@store/slices/userSlice';
+import { fetchUserById } from '@store/reducer/userSlice';
 import { Colors, Spacing } from '@constants';
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import { RootStackParamList } from '@types';

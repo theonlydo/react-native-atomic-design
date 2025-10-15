@@ -6,7 +6,7 @@ import { DataList } from '@organisms/DataList';
 import { ListItem } from '@molecules/ListItem';
 import { LanguageSwitcher } from '@molecules/LanguageSwitcher';
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
-import { fetchUsers } from '../store/slices/userSlice';
+import { fetchUsers } from '../store/reducer/userSlice';
 import { User } from '../types';
 import { Colors } from '../constants/colors';
 import { Spacing } from '../constants/spacing';

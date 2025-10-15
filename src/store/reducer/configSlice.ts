@@ -1,12 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '@store';
-
-export type Language = 'en' | 'id';
-
-export interface ConfigState {
-  language: Language;
-  theme: 'light' | 'dark';
-}
+import { Language, ConfigState } from '@types';
 
 const initialState: ConfigState = {
   language: 'id', // Default bahasa Indonesia

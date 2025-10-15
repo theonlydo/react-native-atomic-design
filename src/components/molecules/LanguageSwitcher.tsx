@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Text } from '@atoms/Text';
 import { Colors, Spacing, BorderRadius } from '@constants';
-import { selectLanguage, setLanguage, type Language } from '@store/slices/configSlice';
+import { selectLanguage, setLanguage } from '@store/reducer/configSlice';
+import { Language } from '@types';
 import type { AppDispatch } from '@store';
 
 interface LanguageSwitcherProps {

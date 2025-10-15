@@ -14,10 +14,11 @@ export interface Post {
   body: string;
 }
 
-export interface ApiResponse<T> {
+export interface ApiResponse<T = any> {
+  status: 1 | 0; // 1 = success, 0 = error
+  status_code: number;
+  message: string;
   data: T;
-  status: number;
-  message?: string;
 }
 
 export interface ApiError {
@@ -31,3 +32,9 @@ export type RootStackParamList = {
   Detail: { id?: number }; // Make id optional for tab navigation
   Profile: undefined;
 };
+
+// Export Redux state types
+export * from './auth.types';
+export * from './user.types';
+export * from './post.types';
+export * from './config.types';

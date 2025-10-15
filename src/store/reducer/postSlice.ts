@@ -1,13 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { Post } from '@types';
+import { Post, PostState } from '@types';
 import { postService } from '@services';
-
-interface PostState {
-  posts: Post[];
-  selectedPost: Post | null;
-  loading: boolean;
-  error: string | null;
-}
 
 const initialState: PostState = {
   posts: [],
