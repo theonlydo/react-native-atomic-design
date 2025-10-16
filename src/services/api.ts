@@ -79,8 +79,8 @@ class ApiClient {
             console.error('API Error:', apiError);
             return Promise.reject(apiError);
           }
-          // Return only the data part for success responses (status === 1)
-          return { ...response, data: wrappedData.data } as any;
+          // Return the full wrapped response for status === 1
+          return { ...response, data: wrappedData } as any;
         }
 
         // If not wrapped, return as-is (for backward compatibility)
