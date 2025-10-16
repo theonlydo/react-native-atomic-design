@@ -86,20 +86,24 @@ export const ContactListScreen: React.FC<ContactListScreenProps> = () => {
 
   // Filter contacts based on search query (client-side for now)
   const filteredContacts = useMemo(() => {
-    if (!searchQuery.trim()) return contacts;
-
-    const query = searchQuery.toLowerCase();
-    return contacts.filter(contact =>
-      contact.full_name.toLowerCase().includes(query) ||
-      (contact.email && contact.email.toLowerCase().includes(query)) ||
-      contact.phone.includes(query)
-    );
-  }, [contacts, searchQuery]);
+    return contacts;
+  }, [contacts]);
 
   useEffect(() => {
     loadContacts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Debounce search API call
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      // Reset to page 1 when search query changes
+      loadContacts(1, searchQuery);
+    }, 500); // 500ms debounce
+
+    return () => clearTimeout(timeoutId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchQuery]);
 
   const loadContacts = async (page: number = 1, search: string = '') => {
     try {
@@ -176,8 +180,7 @@ export const ContactListScreen: React.FC<ContactListScreenProps> = () => {
 
   const handleSearch = (text: string) => {
     setSearchQuery(text);
-    // Debounce would be better in production
-    // For now, search on client-side filtering
+    // API call will be triggered by useEffect with debounce
   };
 
   const handleContactPress = (contact: Contact) => {

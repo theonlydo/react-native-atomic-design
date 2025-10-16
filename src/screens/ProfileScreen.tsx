@@ -328,7 +328,8 @@ const styles = StyleSheet.create({
     color: Colors.textSecondary,
   },
   formContainer: {
-    paddingHorizontal: Spacing.lg,
+    padding: Spacing.lg,
+    borderRadius: 8,
     backgroundColor: Colors.white,
   },
   editActions: {
