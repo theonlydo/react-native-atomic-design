@@ -21,14 +21,7 @@ import { Text, Button, Spacer } from '@components';
 import { ListItem, LoadingState, ErrorState, FormInput } from '@components';
 import { Colors, Spacing } from '@constants';
 import { isValidEmail, isValidPhone } from '@utils';
-
-interface Contact {
-  id: number;
-  full_name: string;
-  email: string;
-  phone: string;
-  avatar?: string;
-}
+import { contactApi, Contact } from '@services';
 
 interface ContactListScreenProps {
   navigation: any;
@@ -42,6 +35,13 @@ export const ContactListScreen: React.FC<ContactListScreenProps> = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [editingContact, setEditingContact] = useState<Contact | null>(null);
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const ITEMS_PER_PAGE = 20;
 
   // Form state
   const [formData, setFormData] = useState({
@@ -81,83 +81,100 @@ export const ContactListScreen: React.FC<ContactListScreenProps> = () => {
       !formErrors.phone;
   }, [formData, formErrors]);
 
-  // Filter contacts based on search query
+  // Filter contacts based on search query (client-side for now)
   const filteredContacts = useMemo(() => {
     if (!searchQuery.trim()) return contacts;
 
     const query = searchQuery.toLowerCase();
     return contacts.filter(contact =>
       contact.full_name.toLowerCase().includes(query) ||
-      contact.email.toLowerCase().includes(query) ||
+      (contact.email && contact.email.toLowerCase().includes(query)) ||
       contact.phone.includes(query)
     );
   }, [contacts, searchQuery]);
-
-  // Mock data untuk sekarang
-  const mockContacts: Contact[] = [
-    {
-      id: 1,
-      full_name: 'John Doe',
-      email: 'john.doe@example.com',
-      phone: '+1 234 567 8901',
-      avatar: '👨',
-    },
-    {
-      id: 2,
-      full_name: 'Jane Smith',
-      email: 'jane.smith@example.com',
-      phone: '+1 234 567 8902',
-      avatar: '👩',
-    },
-    {
-      id: 3,
-      full_name: 'Bob Johnson',
-      email: 'bob.j@example.com',
-      phone: '+1 234 567 8903',
-      avatar: '👨‍💼',
-    },
-    {
-      id: 4,
-      full_name: 'Alice Williams',
-      email: 'alice.w@example.com',
-      phone: '+1 234 567 8904',
-      avatar: '👩‍💻',
-    },
-    {
-      id: 5,
-      full_name: 'Charlie Brown',
-      email: 'charlie.b@example.com',
-      phone: '+1 234 567 8905',
-      avatar: '🧑',
-    },
-  ];
 
   useEffect(() => {
     loadContacts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const loadContacts = async () => {
+  const loadContacts = async (page: number = 1, search: string = '') => {
     try {
-      setLoading(true);
+      if (page === 1) {
+        setLoading(true);
+      } else {
+        setLoadingMore(true);
+      }
       setError(null);
 
-      // Simulate API call
-      setTimeout(() => {
-        setContacts(mockContacts);
-        setLoading(false);
-      }, 1000);
-    } catch (err: any) {
-      console.error('Load contacts error:', err);
-      setError('Failed to load contacts');
+      console.log('=== GET CONTACTS API CALL ===');
+      console.log('Params:', { q: search, page, limit: ITEMS_PER_PAGE });
+
+      // Call real API
+      const response = await contactApi.getList({
+        q: search,
+        page: page,
+        limit: ITEMS_PER_PAGE,
+      });
+
+      console.log('Response received:', response);
+
+      if (response.status === 1 && response.data) {
+        console.log('Contacts loaded:', response.data.contacts.length);
+
+        if (page === 1) {
+          // First page - replace contacts
+          setContacts(response.data.contacts);
+        } else {
+          // Load more - append contacts
+          setContacts(prev => [...prev, ...response.data.contacts]);
+        }
+
+        setTotalCount(response.data.count);
+        setCurrentPage(response.data.page);
+
+        // Check if there are more pages
+        const totalPages = Math.ceil(response.data.count / response.data.limit);
+        setHasMore(response.data.page < totalPages);
+      } else {
+        console.log('Failed to load contacts:', response.message);
+        setError(response.message || 'Failed to load contacts');
+      }
+
       setLoading(false);
+      setLoadingMore(false);
+    } catch (err: any) {
+      console.error('=== LOAD CONTACTS ERROR ===');
+      console.error('Full error:', err);
+      console.error('Error message:', err.message);
+
+      let errorMessage = 'Failed to load contacts';
+      if (err.message) {
+        errorMessage = err.message;
+      }
+
+      setError(errorMessage);
+      setLoading(false);
+      setLoadingMore(false);
     }
   };
 
   const handleRefresh = async () => {
     setRefreshing(true);
-    await loadContacts();
+    await loadContacts(1, searchQuery);
     setRefreshing(false);
+  };
+
+  const handleLoadMore = () => {
+    if (!loadingMore && hasMore && !loading) {
+      loadContacts(currentPage + 1, searchQuery);
+    }
+  };
+
+  const handleSearch = (text: string) => {
+    setSearchQuery(text);
+    // Debounce would be better in production
+    // For now, search on client-side filtering
   };
 
   const handleContactPress = (contact: Contact) => {
@@ -165,7 +182,7 @@ export const ContactListScreen: React.FC<ContactListScreenProps> = () => {
     setEditingContact(contact);
     setFormData({
       full_name: contact.full_name,
-      email: contact.email,
+      email: contact.email || '',
       phone: contact.phone,
     });
     setFormTouched({
@@ -199,7 +216,7 @@ export const ContactListScreen: React.FC<ContactListScreenProps> = () => {
     setFormTouched({ full_name: false, email: false, phone: false });
   };
 
-  const handleSaveContact = () => {
+  const handleSaveContact = async () => {
     // Mark all as touched
     setFormTouched({ full_name: true, email: true, phone: true });
 
@@ -208,27 +225,67 @@ export const ContactListScreen: React.FC<ContactListScreenProps> = () => {
       return;
     }
 
-    if (editingContact) {
-      // Update existing contact
-      const updatedContacts = contacts.map(contact =>
-        contact.id === editingContact.id
-          ? { ...contact, ...formData }
-          : contact
-      );
-      setContacts(updatedContacts);
-      Alert.alert('Success', 'Contact updated successfully!');
-    } else {
-      // Create new contact
-      const newContact: Contact = {
-        id: Date.now(),
-        ...formData,
-        avatar: '👤',
-      };
-      setContacts([...contacts, newContact]);
-      Alert.alert('Success', 'Contact added successfully!');
-    }
+    try {
+      if (editingContact) {
+        // Update existing contact
+        console.log('=== UPDATE CONTACT API CALL ===');
+        console.log('Endpoint: PUT /api/v1/contacts/' + editingContact.id);
+        console.log('Payload:', JSON.stringify({
+          full_name: formData.full_name,
+          phone: formData.phone,
+          email: formData.email || null,
+        }, null, 2));
 
-    handleCloseModal();
+        const response = await contactApi.update(editingContact.id, {
+          full_name: formData.full_name,
+          phone: formData.phone,
+          email: formData.email || null,
+        });
+
+        console.log('Response:', JSON.stringify(response, null, 2));
+
+        if (response.status === 1 && response.data) {
+          console.log('Contact updated:', response.data);
+          Alert.alert('Success', 'Contact updated successfully!');
+          await loadContacts(1, searchQuery); // Reload contacts
+          handleCloseModal();
+        } else {
+          console.log('Failed to update contact:', response.message);
+          Alert.alert('Error', response.message || 'Failed to update contact');
+        }
+      } else {
+        // Create new contact
+        console.log('=== CREATE CONTACT API CALL ===');
+        console.log('Endpoint: POST /api/v1/contacts');
+        console.log('Payload:', JSON.stringify({
+          full_name: formData.full_name,
+          phone: formData.phone,
+          email: formData.email || null,
+        }, null, 2));
+
+        const response = await contactApi.create({
+          full_name: formData.full_name,
+          phone: formData.phone,
+          email: formData.email || null,
+        });
+
+        console.log('Response:', JSON.stringify(response, null, 2));
+
+        if (response.status === 1 && response.data) {
+          console.log('Contact created:', response.data);
+          Alert.alert('Success', 'Contact added successfully!');
+          await loadContacts(1, searchQuery); // Reload contacts
+          handleCloseModal();
+        } else {
+          console.log('Failed to create contact:', response.message);
+          Alert.alert('Error', response.message || 'Failed to add contact');
+        }
+      }
+    } catch (error: any) {
+      console.error('=== SAVE CONTACT ERROR ===');
+      console.error('Error:', error);
+      Alert.alert('Error', error.message || 'Failed to save contact');
+    }
   };
 
   const handleDeleteContact = (contactId: number) => {
@@ -240,9 +297,24 @@ export const ContactListScreen: React.FC<ContactListScreenProps> = () => {
         {
           text: 'Delete',
           style: 'destructive',
-          onPress: () => {
-            setContacts(contacts.filter(c => c.id !== contactId));
-            Alert.alert('Success', 'Contact deleted');
+          onPress: async () => {
+            try {
+              console.log('=== DELETE CONTACT API CALL ===');
+              console.log('Contact ID:', contactId);
+
+              const response = await contactApi.delete(contactId);
+
+              if (response.status === 1) {
+                Alert.alert('Success', 'Contact deleted');
+                await loadContacts(1, searchQuery); // Reload contacts
+              } else {
+                Alert.alert('Error', response.message || 'Failed to delete contact');
+              }
+            } catch (error: any) {
+              console.error('=== DELETE CONTACT ERROR ===');
+              console.error('Error:', error);
+              Alert.alert('Error', error.message || 'Failed to delete contact');
+            }
           },
         },
       ],
@@ -254,7 +326,7 @@ export const ContactListScreen: React.FC<ContactListScreenProps> = () => {
       <View style={styles.contactInfo}>
         <ListItem
           title={item.full_name}
-          subtitle={item.email}
+          subtitle={item.email || item.phone}
           onPress={() => handleContactPress(item)}
         />
       </View>
@@ -270,7 +342,7 @@ export const ContactListScreen: React.FC<ContactListScreenProps> = () => {
     <View style={styles.headerContainer}>
       <View style={styles.header}>
         <Text style={styles.title}>Contacts</Text>
-        <Text style={styles.counter}>{filteredContacts.length} Contacts</Text>
+        <Text style={styles.counter}>{totalCount} Contacts</Text>
       </View>
 
       {/* Search Bar */}
@@ -281,17 +353,26 @@ export const ContactListScreen: React.FC<ContactListScreenProps> = () => {
           placeholder="Search contacts..."
           placeholderTextColor={Colors.textSecondary}
           value={searchQuery}
-          onChangeText={setSearchQuery}
+          onChangeText={handleSearch}
           autoCapitalize="none"
         />
         {searchQuery.length > 0 && (
-          <TouchableOpacity onPress={() => setSearchQuery('')}>
+          <TouchableOpacity onPress={() => handleSearch('')}>
             <Text style={styles.clearIcon}>✕</Text>
           </TouchableOpacity>
         )}
       </View>
     </View>
   );
+
+  const renderFooter = () => {
+    if (!loadingMore) return null;
+    return (
+      <View style={styles.footerLoader}>
+        <Text style={styles.footerText}>Loading more...</Text>
+      </View>
+    );
+  };
 
   const renderEmpty = () => (
     <View style={styles.emptyContainer}>
@@ -307,8 +388,8 @@ export const ContactListScreen: React.FC<ContactListScreenProps> = () => {
     return <LoadingState />;
   }
 
-  if (error) {
-    return <ErrorState message={error} onRetry={loadContacts} />;
+  if (error && contacts.length === 0) {
+    return <ErrorState message={error} onRetry={() => loadContacts()} />;
   }
 
   return (
@@ -320,6 +401,9 @@ export const ContactListScreen: React.FC<ContactListScreenProps> = () => {
         keyExtractor={item => item.id.toString()}
         contentContainerStyle={styles.listContent}
         ListEmptyComponent={renderEmpty}
+        ListFooterComponent={renderFooter}
+        onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.5}
         refreshControl={
           <RefreshControl
             refreshing={refreshing}
@@ -578,5 +662,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.textSecondary,
     textAlign: 'center',
+  },
+  footerLoader: {
+    paddingVertical: Spacing.md,
+    alignItems: 'center',
+  },
+  footerText: {
+    fontSize: 14,
+    color: Colors.textSecondary,
   },
 });

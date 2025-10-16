@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TextStyle } from 'react-native';
 import { Input, Text, Spacer } from '@components';
 import { Colors } from '@constants';
 
@@ -14,12 +14,16 @@ interface FormInputProps {
   keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad';
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
   onBlur?: () => void;
+  editable?: boolean;
+  style?: TextStyle;
 }
 
 export const FormInput: React.FC<FormInputProps> = ({
   label,
   error,
   required = false,
+  editable = true,
+  style,
   ...inputProps
 }) => {
   return (
@@ -33,7 +37,12 @@ export const FormInput: React.FC<FormInputProps> = ({
           <Spacer size="xs" />
         </>
       )}
-      <Input error={!!error} {...inputProps} />
+      <Input
+        error={!!error}
+        editable={editable}
+        style={[!editable && styles.disabledInput, style]}
+        {...inputProps}
+      />
       {error && (
         <>
           <Spacer size="xs" />
@@ -50,5 +59,9 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     backgroundColor: Colors.lightGray,
+  },
+  disabledInput: {
+    backgroundColor: Colors.surface,
+    opacity: 0.7,
   },
 });
