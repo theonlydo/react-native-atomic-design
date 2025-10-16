@@ -9,7 +9,7 @@ import configReducer from './reducer/configSlice';
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['config', 'auth'], // Persist config dan auth slice (termasuk token)
+  whitelist: ['config', 'auth', 'user'], // Persist config dan auth slice (termasuk token)
 };
 
 const rootReducer = combineReducers({

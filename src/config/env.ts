@@ -66,7 +66,7 @@ const loadConfig = (): EnvironmentConfig => {
     },
 
     // Feature Flags
-    enableLogging: __DEV__,
+    enableLogging: false,
     enableDebugMode: __DEV__,
     enableReduxLogger: __DEV__,
 
@@ -84,7 +84,7 @@ export const isDevelopment = () => APP_ENV === 'development';
 export const isProduction = () => APP_ENV === 'production';
 
 // Log current environment (only in development)
-if (AppConfig.enableLogging && __DEV__) {
+if (AppConfig.enableLogging) {
   console.log('🌍 Environment:', AppConfig.environment);
   console.log('🔗 API Base URL:', AppConfig.apiBaseUrl);
 }
