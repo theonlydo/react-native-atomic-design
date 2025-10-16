@@ -10,7 +10,8 @@ import {
   Platform,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { Text, Card, Spacer, LanguageSwitcher, Button } from '@components';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { Text, Spacer, LanguageSwitcher, Button } from '@components';
 import { FormInput } from '@components';
 import { Colors, Spacing } from '@constants';
 import { useAppDispatch, useAppSelector } from '@hooks';
@@ -148,109 +149,113 @@ export const ProfileScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.content}>
-        <View style={styles.headerRow}>
-          <Text variant="h2" i18nKey="profile.title" />
-          <LanguageSwitcher variant="compact" />
-        </View>
-        <Spacer size="md" />
+      <KeyboardAvoidingView
+        style={styles.keyboardView}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <ScrollView contentContainerStyle={styles.content}>
 
-        {/* Profile Card */}
-        <Card>
-          <View style={styles.profileHeader}>
-            <View style={styles.avatar}>
-              <Text style={styles.avatarText}>
-                {currentUser?.name?.charAt(0).toUpperCase() || '👤'}
+
+          {/* Profile Avatar Section */}
+          <View style={styles.profileSection}>
+            <Spacer size="lg" />
+            <View style={styles.avatarLarge}>
+              <Text style={styles.avatarTextLarge}>
+                {currentUser?.name?.substring(0, 2).toUpperCase() || '👤'}
               </Text>
             </View>
-            <View style={styles.profileInfo}>
-              <Text variant="h3">{currentUser?.name || 'User Name'}</Text>
-              <Spacer size="xs" />
-              <Text variant="body" color={Colors.textSecondary}>
-                {currentUser?.email || 'user@example.com'}
-              </Text>
-            </View>
+            <Spacer size="sm" />
+            <Text style={styles.profileName}>{currentUser?.name || 'User Name'}</Text>
+            <Text style={styles.profileEmail}>{currentUser?.email || 'user@example.com'}</Text>
           </View>
 
-          <Spacer size="lg" />
+          <Spacer size="xl" />
 
-          {/* Email (Read-only) */}
-          <FormInput
-            label="Email"
-            value={currentUser?.email || ''}
-            editable={false}
-            placeholder="Email"
-            keyboardType="email-address"
-            style={styles.disabledInput}
-          />
+          {/* Form Container */}
+          <View style={styles.formContainer}>
+            {/* Email (Read-only) */}
+            <FormInput
+              label="Email"
+              value={currentUser?.email || ''}
+              placeholder="Email"
+              keyboardType="email-address"
+              editable={false}
+            />
 
-          <Spacer size="md" />
+            <Spacer size="md" />
 
-          {/* Full Name */}
-          <FormInput
-            label="Full Name"
-            value={fullName}
-            onChangeText={setFullName}
-            editable={isEditing}
-            placeholder="Enter your full name"
-            error={nameError}
-            onBlur={() => setNameTouched(true)}
-            style={!isEditing ? styles.disabledInput : undefined}
-          />
+            {/* Full Name */}
+            <FormInput
+              label="Full Name"
+              value={fullName}
+              onChangeText={setFullName}
+              editable={isEditing}
+              placeholder="Enter your full name"
+              error={nameError}
+              onBlur={() => setNameTouched(true)}
+              size="small"
+            />
 
-          <Spacer size="md" />
+            <Spacer size="md" />
 
-          {/* Phone */}
-          <FormInput
-            label="Phone"
-            value={phone}
-            onChangeText={setPhone}
-            editable={isEditing}
-            placeholder="Enter your phone number"
-            keyboardType="phone-pad"
-            error={phoneError}
-            onBlur={() => setPhoneTouched(true)}
-            style={!isEditing ? styles.disabledInput : undefined}
-          />
+            {/* Phone */}
+            <FormInput
+              label="Phone"
+              value={phone}
+              onChangeText={setPhone}
+              editable={isEditing}
+              placeholder="Enter your phone number"
+              keyboardType="phone-pad"
+              error={phoneError}
+              onBlur={() => setPhoneTouched(true)}
+              size="small"
+            />
 
-          <Spacer size="lg" />
+            <Spacer size="xl" />
 
-          {/* Action Buttons */}
-          {!isEditing ? (
-            <Button
-              variant="secondary"
-              onPress={handleEditProfile}
-              icon="✏️"
-              iconPosition="left">
-              Edit Profile
-            </Button>
-          ) : (
-            <View style={styles.editActions}>
-              <Button
-                variant="outline"
-                onPress={handleCancelEdit}
-                style={styles.cancelButton}>
-                Cancel
-              </Button>
+            {/* Action Buttons */}
+            {!isEditing ? (
               <Button
                 variant="primary"
-                onPress={handleSaveProfile}
-                loading={loading}
-                disabled={!isFormValid}
-                style={styles.saveButton}>
-                Save Changes
+                onPress={handleEditProfile}
+                fullWidth
+                size='small'
+                icon={<Icon name="edit" size={18} color={Colors.white} />}
+                iconPosition="left">
+                Edit Profile
               </Button>
-            </View>
-          )}
-        </Card>
+            ) : (
+              <View style={styles.editActions}>
+                <Button
+                  variant="outline"
+                  onPress={handleCancelEdit}
+                  size="small"
+                  style={styles.actionButton}>
+                  Cancel
+                </Button>
+                <Button
+                  variant="primary"
+                  onPress={handleSaveProfile}
+                  loading={loading}
+                  disabled={!isFormValid}
+                  size="small"
+                  style={styles.actionButton}>
+                  Save
+                </Button>
+              </View>
+            )}
+          </View>
 
-        <Spacer size="lg" />
+          <Spacer size="xl" />
 
-        {/* Logout Button */}
-        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-          <Text style={styles.logoutButtonText}>🚪 Logout</Text>
-        </TouchableOpacity>
-      </ScrollView>
+          {/* Logout Button */}
+          <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+            <Icon name="logout" size={20} color={Colors.white} />
+            <Text style={styles.logoutButtonText}>Logout</Text>
+          </TouchableOpacity>
+
+          <Spacer size="xl" />
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -260,70 +265,91 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
   },
-  content: {
-    padding: Spacing.md,
+  keyboardView: {
+    flex: 1,
   },
-  headerRow: {
+  content: {
+    paddingBottom: Spacing.xl,
+    backgroundColor: Colors.lightGray,
+  },
+  headerContainer: {
+    backgroundColor: Colors.white,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.border,
+    paddingBottom: Spacing.sm,
+  },
+  header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: Spacing.lg,
+    paddingTop: Spacing.md,
+    paddingBottom: Spacing.sm,
   },
-  profileHeader: {
+  profileHeaderInfo: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    flex: 1,
   },
-  avatar: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: Colors.text,
+  },
+  profileSection: {
+    alignItems: 'center',
+    paddingHorizontal: Spacing.lg,
+    backgroundColor: Colors.white,
+    paddingBottom: Spacing.md,
+
+  },
+  avatarLarge: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
     backgroundColor: Colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: Spacing.md,
   },
-  avatarText: {
-    fontSize: 32,
+  avatarTextLarge: {
+    fontSize: 40,
+    fontWeight: 'bold',
     color: Colors.white,
   },
-  profileInfo: {
-    flex: 1,
+  profileName: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: Colors.text,
   },
-  disabledInput: {
-    backgroundColor: Colors.surface,
-    opacity: 0.7,
+  profileEmail: {
+    fontSize: 15,
+    color: Colors.textSecondary,
+  },
+  formContainer: {
+    paddingHorizontal: Spacing.lg,
+    backgroundColor: Colors.white,
   },
   editActions: {
     flexDirection: 'row',
     gap: Spacing.sm,
   },
-  cancelButton: {
+  actionButton: {
     flex: 1,
-  },
-  saveButton: {
-    flex: 1,
-  },
-  editButton: {
-    backgroundColor: Colors.background,
-    borderWidth: 1,
-    borderColor: Colors.border,
-    padding: Spacing.sm,
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  editButtonText: {
-    fontSize: 14,
-    color: Colors.text,
-    fontWeight: '600',
   },
   logoutButton: {
     backgroundColor: Colors.error,
-    padding: Spacing.md,
+    marginHorizontal: Spacing.lg,
+    paddingVertical: Spacing.sm,
     borderRadius: 8,
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
+    gap: Spacing.sm,
   },
   logoutButtonText: {
     color: Colors.white,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
 });

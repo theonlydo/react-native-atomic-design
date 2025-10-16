@@ -15,6 +15,7 @@ interface FormInputProps {
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
   onBlur?: () => void;
   size?: 'default' | 'small';
+  editable?: boolean;
 }
 
 export const FormInput: React.FC<FormInputProps> = ({
@@ -59,7 +60,6 @@ export const FormInput: React.FC<FormInputProps> = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    backgroundColor: Colors.gre,
   },
   smallInput: {
     height: 40,
