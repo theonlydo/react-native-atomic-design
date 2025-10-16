@@ -10,7 +10,6 @@ import {
 import { useTranslation } from 'react-i18next';
 import { Text, Card, Spacer, LanguageSwitcher } from '@components';
 import { Colors, Spacing } from '@constants';
-import { AppConfig, isDevelopment } from '@config';
 import { useAppDispatch, useAppSelector } from '@hooks';
 import { clearTokens } from '@store/reducer/authSlice';
 import { clearCurrentUser } from '@store/reducer/userSlice';
@@ -87,35 +86,8 @@ export const ProfileScreen: React.FC = () => {
         <Spacer size="lg" />
 
         {/* Environment Info Card - Show in Development */}
-        {isDevelopment() && (
-          <>
-            <Card>
-              <Text variant="h3">🔧 Environment Info</Text>
-              <Spacer size="sm" />
-              <Text variant="caption" color={Colors.textSecondary}>
-                App: {AppConfig.appName} v{AppConfig.appVersion}
-              </Text>
-              <Text variant="caption" color={Colors.textSecondary}>
-                Environment: {AppConfig.environment}
-              </Text>
-              <Text variant="caption" color={Colors.textSecondary}>
-                API: {AppConfig.apiBaseUrl}
-              </Text>
-              <Text variant="caption" color={Colors.textSecondary}>
-                Logging: {AppConfig.enableLogging ? '✅' : '❌'}
-              </Text>
-              <Text variant="caption" color={Colors.textSecondary}>
-                Debug Mode: {AppConfig.enableDebugMode ? '✅' : '❌'}
-              </Text>
-            </Card>
-            <Spacer size="lg" />
-          </>
-        )}
 
-        {/* Language Switcher */}
-        <LanguageSwitcher variant="expanded" />
 
-        <Spacer size="lg" />
 
         {/* Logout Button */}
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
