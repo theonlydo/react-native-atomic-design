@@ -179,6 +179,7 @@ export const ProfileScreen: React.FC = () => {
               placeholder="Email"
               keyboardType="email-address"
               editable={false}
+              size='small'
             />
 
             <Spacer size="md" />

@@ -535,7 +535,8 @@ export const ContactListScreen: React.FC<ContactListScreenProps> = () => {
                 onPress={handleSaveContact}
                 disabled={!isFormValid}
                 fullWidth
-                size='small'>
+                size='small'
+                style={{ backgroundColor: Colors.darkGray }}>
                 {editingContact ? 'Update Contact' : 'Save Contact'}
               </Button>
             </ScrollView>

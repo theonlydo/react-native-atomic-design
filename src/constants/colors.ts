@@ -21,7 +21,6 @@ export const Colors = {
   gray: '#8E8E93',
   lightGray: '#F9FAFB',
   darkGray: '#3A3A3C',
-  border: '#E5E7EB',
 
   // Background colors
   background: '#fff',
@@ -35,6 +34,7 @@ export const Colors = {
   textSecondary: '#8E8E93',
   textDark: '#FFFFFF',
   textSecondaryDark: '#98989D',
+  inputText: '#717182',
 
   // Border colors
   border: '#C6C6C8',

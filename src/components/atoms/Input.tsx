@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.md,
     fontSize: FontSize.md,
-    color: Colors.text,
+    color: Colors.inputText,
     backgroundColor: Colors.lightGray,
   },
   inputError: {
