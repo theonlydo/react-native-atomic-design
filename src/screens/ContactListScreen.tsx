@@ -450,12 +450,14 @@ export const ContactListScreen: React.FC<ContactListScreenProps> = () => {
         }
       />
 
-      {/* Floating Add Button */}
-      <TouchableOpacity
-        style={styles.floatingButton}
-        onPress={handleAddContact}>
-        <Icon name="person-add" size={24} color={Colors.white} />
-      </TouchableOpacity>
+      <Button
+        onPress={handleAddContact}
+
+        size='small'
+        style={{ margin: Spacing.md, backgroundColor: Colors.darkGray }}
+      >
+        Add Contact
+      </Button>
 
       {/* Add/Edit Contact Modal */}
       <Modal

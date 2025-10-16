@@ -123,6 +123,7 @@ const styles = StyleSheet.create({
   size_small: {
     paddingHorizontal: Spacing.md,
     paddingVertical: Spacing.sm,
+    borderRadius: BorderRadius.md,
   },
   size_medium: {
     paddingHorizontal: Spacing.lg,
