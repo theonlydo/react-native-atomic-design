@@ -10,7 +10,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { Text, Card, Spacer, LanguageSwitcher } from '@components';
 import { Colors, Spacing } from '@constants';
-import { Config, isDevelopment } from '@config';
+import { AppConfig, isDevelopment } from '@config';
 import { useAppDispatch, useAppSelector } from '@hooks';
 import { clearTokens } from '@store/reducer/authSlice';
 import { clearCurrentUser } from '@store/reducer/userSlice';
@@ -93,19 +93,19 @@ export const ProfileScreen: React.FC = () => {
               <Text variant="h3">🔧 Environment Info</Text>
               <Spacer size="sm" />
               <Text variant="caption" color={Colors.textSecondary}>
-                App: {Config.appName} v{Config.appVersion}
+                App: {AppConfig.appName} v{AppConfig.appVersion}
               </Text>
               <Text variant="caption" color={Colors.textSecondary}>
-                Environment: {Config.environment}
+                Environment: {AppConfig.environment}
               </Text>
               <Text variant="caption" color={Colors.textSecondary}>
-                API: {Config.apiBaseUrl}
+                API: {AppConfig.apiBaseUrl}
               </Text>
               <Text variant="caption" color={Colors.textSecondary}>
-                Logging: {Config.enableLogging ? '✅' : '❌'}
+                Logging: {AppConfig.enableLogging ? '✅' : '❌'}
               </Text>
               <Text variant="caption" color={Colors.textSecondary}>
-                Debug Mode: {Config.enableDebugMode ? '✅' : '❌'}
+                Debug Mode: {AppConfig.enableDebugMode ? '✅' : '❌'}
               </Text>
             </Card>
             <Spacer size="lg" />

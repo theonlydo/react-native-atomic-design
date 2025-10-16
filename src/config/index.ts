@@ -1,1 +1,1 @@
-export { Config, APP_ENV, isDevelopment, isProduction } from './env';
+export { AppConfig, APP_ENV, isDevelopment, isProduction } from './env';

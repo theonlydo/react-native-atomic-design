@@ -4,13 +4,13 @@ import axios, {
   AxiosResponse,
   AxiosError,
 } from 'axios';
-import { Config } from '@config';
+import { AppConfig } from '@config';
 import { ApiError, ApiResponse } from '@types';
 import { store } from '../store';
 import { startNetworkLogging } from 'react-native-network-logger';
 
 // Start network logging in development mode
-if (Config.enableLogging) {
+if (AppConfig.enableLogging) {
   startNetworkLogging();
 }
 
@@ -19,8 +19,8 @@ class ApiClient {
 
   constructor() {
     this.client = axios.create({
-      baseURL: Config.apiBaseUrl,
-      timeout: Config.apiTimeout,
+      baseURL: AppConfig.apiBaseUrl,
+      timeout: AppConfig.apiTimeout,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -40,13 +40,13 @@ class ApiClient {
         }
 
         // Log only in development
-        if (Config.enableLogging) {
+        if (AppConfig.enableLogging) {
           console.log('Request:', config.method?.toUpperCase(), config.url);
         }
         return config;
       },
       error => {
-        if (Config.enableLogging) {
+        if (AppConfig.enableLogging) {
           console.error('Request Error:', error);
         }
         return Promise.reject(error);
@@ -56,7 +56,7 @@ class ApiClient {
     // Response interceptor
     this.client.interceptors.response.use(
       (response: AxiosResponse<ApiResponse>) => {
-        if (Config.enableLogging) {
+        if (AppConfig.enableLogging) {
           console.log('Response:', response.status, response.config.url);
         }
 
@@ -170,3 +170,4 @@ class ApiClient {
 }
 
 export const apiClient = new ApiClient();
+export const api = apiClient;

@@ -1,6 +1,10 @@
 import { apiClient } from './api';
 import { User, Post } from '@types';
 
+// Export new API services
+export * from './auth.service';
+export * from './contact.service';
+
 export const userService = {
   /**
    * Get all users

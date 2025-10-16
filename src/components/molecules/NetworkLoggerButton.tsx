@@ -17,7 +17,7 @@ import {
 import NetworkLogger from 'react-native-network-logger';
 import { Text } from '../atoms';
 import { Colors } from '../../constants';
-import { Config } from '@config';
+import { AppConfig } from '@config';
 
 export const NetworkLoggerButton: React.FC = () => {
   const [visible, setVisible] = useState(false);
@@ -26,7 +26,7 @@ export const NetworkLoggerButton: React.FC = () => {
   );
 
   // Don't render in production
-  if (!Config.enableLogging) {
+  if (!AppConfig.enableLogging) {
     return null;
   }
 

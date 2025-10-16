@@ -1,6 +1,6 @@
 export const Colors = {
   // Primary colors
-  primary: '#007AFF',
+  primary: '#155DFC',
   primaryDark: '#0051D5',
   primaryLight: '#3395FF',
 
@@ -12,21 +12,22 @@ export const Colors = {
   // Status colors
   success: '#34C759',
   warning: '#FF9500',
-  error: '#FF3B30',
+  error: '#E7000B',
   info: '#5AC8FA',
 
   // Neutral colors
   white: '#FFFFFF',
-  black: '#000000',
+  black: '#030213',
   gray: '#8E8E93',
-  lightGray: '#C7C7CC',
+  lightGray: '#F9FAFB',
   darkGray: '#3A3A3C',
 
   // Background colors
-  background: '#F2F2F7',
-  backgroundDark: '#1C1C1E',
+  background: '#F9FAFB',
+  backgroundDark: '#030213',
   card: '#FFFFFF',
   cardDark: '#2C2C2E',
+  surface: '#F3F3F5',
 
   // Text colors
   text: '#000000',
