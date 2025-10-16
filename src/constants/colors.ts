@@ -21,16 +21,17 @@ export const Colors = {
   gray: '#8E8E93',
   lightGray: '#F9FAFB',
   darkGray: '#3A3A3C',
+  border: '#E5E7EB',
 
   // Background colors
-  background: '#F9FAFB',
+  background: '#fff',
   backgroundDark: '#030213',
   card: '#FFFFFF',
   cardDark: '#2C2C2E',
   surface: '#F3F3F5',
 
   // Text colors
-  text: '#000000',
+  text: '#0A0A0A',
   textSecondary: '#8E8E93',
   textDark: '#FFFFFF',
   textSecondaryDark: '#98989D',

@@ -193,7 +193,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
               onBlur={() => setPasswordTouched(true)}
             />
 
-            <Spacer size="xl" />
+            <Spacer size="md" />
 
             <Button
               onPress={handleLogin}
@@ -209,7 +209,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
             <View style={styles.registerContainer}>
               <Text style={styles.registerText}>Don't have an account? </Text>
               <TouchableOpacity onPress={navigateToRegister}>
-                <Text style={styles.registerLink}>Register</Text>
+                <Text style={styles.registerLink}>Sign Up</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
   },
   registerText: {
     fontSize: 14,
-    color: Colors.textSecondary,
+    color: Colors.text,
   },
   registerLink: {
     fontSize: 14,

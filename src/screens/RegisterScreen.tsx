@@ -20,8 +20,6 @@ import { useAppDispatch } from '@hooks';
 import { setTokens } from '@store/reducer/authSlice';
 import { setCurrentUser } from '@store/reducer/userSlice';
 import { authApi } from '@services';
-import { AppConfig } from '../config/env';
-
 interface RegisterScreenProps {
   navigation: any;
 }
@@ -30,14 +28,13 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) =>
   const dispatch = useAppDispatch();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleRegister = async () => {
     // Validation
-    if (!fullName || !email || !phone || !password || !confirmPassword) {
+    if (!fullName || !email || !password || !confirmPassword) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
@@ -54,21 +51,10 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) =>
 
     try {
       setLoading(true);
-
-      console.log('=== REGISTER API CALL ===');
-      console.log('URL:', `${AppConfig.apiBaseUrl}${AppConfig.endpoints.auth.register}`);
-      console.log('Payload:', {
-        full_name: fullName,
-        email: email,
-        phone: phone,
-        password: '***',
-      });
-
       // Call real API
       const response = await authApi.register({
         full_name: fullName,
         email: email,
-        phone: phone,
         password: password,
       });
 
@@ -110,11 +96,6 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) =>
 
       setLoading(false);
     } catch (error: any) {
-      console.error('=== REGISTER ERROR ===');
-      console.error('Full error:', error);
-      console.error('Error message:', error.message);
-      console.error('Error response:', error.response);
-      console.error('Error request:', error.request);
 
       let errorMessage = 'Failed to register. Please try again.';
 
@@ -160,44 +141,32 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) =>
           {/* Form */}
           <View style={styles.form}>
             <FormInput
-              label="Full Name"
               value={fullName}
               onChangeText={setFullName}
-              placeholder="Enter your full name"
+              placeholder="Full Name"
             />
 
             <Spacer size="md" />
 
             <FormInput
-              label="Email"
               value={email}
               onChangeText={setEmail}
-              placeholder="Enter your email"
+              placeholder="Email"
             />
+
 
             <Spacer size="md" />
 
             <FormInput
-              label="Phone"
-              value={phone}
-              onChangeText={setPhone}
-              placeholder="+1 234 567 8900"
-            />
-
-            <Spacer size="md" />
-
-            <FormInput
-              label="Password"
               value={password}
               onChangeText={setPassword}
-              placeholder="Enter your password"
+              placeholder="Password"
               secureTextEntry
             />
 
             <Spacer size="md" />
 
             <FormInput
-              label="Confirm Password"
               value={confirmPassword}
               onChangeText={setConfirmPassword}
               placeholder="Confirm your password"
@@ -269,7 +238,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: Colors.primary,
     padding: Spacing.md,
-    borderRadius: 8,
+    borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
   },
