@@ -3,7 +3,7 @@
  * Authentication screen untuk user login
  */
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   View,
   StyleSheet,
@@ -13,12 +13,13 @@ import {
   Alert,
   TouchableOpacity,
 } from 'react-native';
-import { Text, Spacer } from '@components';
+import { Text, Spacer, Button } from '@components';
 import { FormInput } from '@components';
 import { Colors, Spacing } from '@constants';
 import { useAppDispatch } from '@hooks';
 import { setTokens } from '@store/reducer/authSlice';
 import { setCurrentUser } from '@store/reducer/userSlice';
+import { isValidEmail } from '@utils';
 
 interface LoginScreenProps {
   navigation: any;
@@ -30,10 +31,39 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // Validation states
+  const [emailTouched, setEmailTouched] = useState(false);
+  const [passwordTouched, setPasswordTouched] = useState(false);
+
+  // Email validation
+  const emailError = useMemo(() => {
+    if (!emailTouched) return '';
+    if (!email) return 'Email is required';
+    if (!isValidEmail(email)) return 'Invalid email format';
+    return '';
+  }, [email, emailTouched]);
+
+  // Password validation
+  const passwordError = useMemo(() => {
+    if (!passwordTouched) return '';
+    if (!password) return 'Password is required';
+    if (password.length < 6) return 'Password must be at least 6 characters';
+    return '';
+  }, [password, passwordTouched]);
+
+  // Check if form is valid
+  const isFormValid = useMemo(() => {
+    return email && password && !emailError && !passwordError;
+  }, [email, password, emailError, passwordError]);
+
   const handleLogin = async () => {
+    // Mark all fields as touched
+    setEmailTouched(true);
+    setPasswordTouched(true);
+
     // Validation
-    if (!email || !password) {
-      Alert.alert('Error', 'Please fill in all fields');
+    if (!isFormValid) {
+      Alert.alert('Error', 'Please fix all errors before continuing');
       return;
     }
 
@@ -97,32 +127,35 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           {/* Form */}
           <View style={styles.form}>
             <FormInput
-              label="Email"
               value={email}
               onChangeText={setEmail}
-              placeholder="Enter your email"
+              placeholder="Email"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              error={emailError}
+              onBlur={() => setEmailTouched(true)}
             />
 
             <Spacer size="md" />
 
             <FormInput
-              label="Password"
               value={password}
               onChangeText={setPassword}
-              placeholder="Enter your password"
+              placeholder="Password"
               secureTextEntry
+              error={passwordError}
+              onBlur={() => setPasswordTouched(true)}
             />
 
             <Spacer size="xl" />
 
-            <TouchableOpacity
-              style={[styles.button, loading && styles.buttonDisabled]}
+            <Button
               onPress={handleLogin}
-              disabled={loading}>
-              <Text style={styles.buttonText}>
-                {loading ? 'Logging in...' : 'Login'}
-              </Text>
-            </TouchableOpacity>
+              disabled={!isFormValid || loading}
+              loading={loading}
+              fullWidth>
+              {loading ? 'Logging in...' : 'Sign In'}
+            </Button>
 
             <Spacer size="md" />
 
@@ -189,6 +222,9 @@ const styles = StyleSheet.create({
     color: Colors.white,
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  buttonIcon: {
+    fontSize: 20,
   },
   registerContainer: {
     flexDirection: 'row',

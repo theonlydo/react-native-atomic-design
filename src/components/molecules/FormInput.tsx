@@ -12,6 +12,8 @@ interface FormInputProps {
   onChangeText?: (text: string) => void;
   secureTextEntry?: boolean;
   keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad';
+  autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
+  onBlur?: () => void;
 }
 
 export const FormInput: React.FC<FormInputProps> = ({
@@ -47,5 +49,6 @@ export const FormInput: React.FC<FormInputProps> = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+    backgroundColor: Colors.lightGray,
   },
 });

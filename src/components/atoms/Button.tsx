@@ -6,9 +6,11 @@ import {
   ActivityIndicator,
   TouchableOpacityProps,
   ViewStyle,
+  View,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Colors, Spacing, BorderRadius, FontSize } from '@constants';
+
 interface ButtonProps extends TouchableOpacityProps {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
   size?: 'small' | 'medium' | 'large';
@@ -17,6 +19,8 @@ interface ButtonProps extends TouchableOpacityProps {
   children: React.ReactNode;
   translate?: boolean; // Auto translate by default
   i18nKey?: string; // Translation key
+  icon?: React.ReactNode; // Icon component
+  iconPosition?: 'left' | 'right'; // Icon position
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -26,6 +30,8 @@ export const Button: React.FC<ButtonProps> = ({
   fullWidth = false,
   translate = true,
   i18nKey,
+  icon,
+  iconPosition = 'left',
   disabled,
   style,
   children,
@@ -41,9 +47,10 @@ export const Button: React.FC<ButtonProps> = ({
     ...(disabled && styles.disabled),
   };
 
-  const textColor = variant === 'outline' || variant === 'ghost'
-    ? Colors.primary
-    : Colors.white;
+  const textColor =
+    variant === 'outline' || variant === 'ghost'
+      ? Colors.primary
+      : Colors.white;
 
   // Get translated text
   const getText = () => {
@@ -56,16 +63,38 @@ export const Button: React.FC<ButtonProps> = ({
     return children;
   };
 
+  const renderContent = () => {
+    if (loading) {
+      return <ActivityIndicator color={textColor} />;
+    }
+
+    const textElement = (
+      <Text style={[styles.text, { color: textColor }]}>{getText()}</Text>
+    );
+
+    if (!icon) {
+      return textElement;
+    }
+
+    return (
+      <View style={styles.contentContainer}>
+        {iconPosition === 'left' && (
+          <View style={styles.iconLeft}>{icon}</View>
+        )}
+        {textElement}
+        {iconPosition === 'right' && (
+          <View style={styles.iconRight}>{icon}</View>
+        )}
+      </View>
+    );
+  };
+
   return (
     <TouchableOpacity
       style={[buttonStyle, style]}
       disabled={disabled || loading}
       {...props}>
-      {loading ? (
-        <ActivityIndicator color={textColor} />
-      ) : (
-        <Text style={[styles.text, { color: textColor }]}>{getText()}</Text>
-      )}
+      {renderContent()}
     </TouchableOpacity>
   );
 };
@@ -109,5 +138,16 @@ const styles = StyleSheet.create({
   text: {
     fontSize: FontSize.md,
     fontWeight: '600',
+  },
+  contentContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconLeft: {
+    marginRight: Spacing.sm,
+  },
+  iconRight: {
+    marginLeft: Spacing.sm,
   },
 });
