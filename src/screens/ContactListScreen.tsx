@@ -488,6 +488,7 @@ export const ContactListScreen: React.FC<ContactListScreenProps> = () => {
               {/* Form */}
               <FormInput
                 label="Full Name"
+                size='small'
                 value={formData.full_name}
                 onChangeText={(text) => setFormData({ ...formData, full_name: text })}
                 placeholder="Enter full name"
@@ -500,6 +501,7 @@ export const ContactListScreen: React.FC<ContactListScreenProps> = () => {
 
               <FormInput
                 label="Email"
+                size='small'
                 value={formData.email}
                 onChangeText={(text) => setFormData({ ...formData, email: text })}
                 placeholder="Enter email address"
@@ -514,6 +516,7 @@ export const ContactListScreen: React.FC<ContactListScreenProps> = () => {
 
               <FormInput
                 label="Phone"
+                size='small'
                 value={formData.phone}
                 onChangeText={(text) => setFormData({ ...formData, phone: text })}
                 placeholder="Enter phone number"
@@ -530,20 +533,9 @@ export const ContactListScreen: React.FC<ContactListScreenProps> = () => {
                 onPress={handleSaveContact}
                 disabled={!isFormValid}
                 fullWidth
-                icon={<Text style={styles.buttonIcon}>💾</Text>}>
+                size='small'>
                 {editingContact ? 'Update Contact' : 'Save Contact'}
               </Button>
-
-              <Spacer size="sm" />
-
-              <Button
-                variant="outline"
-                onPress={handleCloseModal}
-                fullWidth>
-                Cancel
-              </Button>
-
-              <Spacer size="lg" />
             </ScrollView>
           </View>
         </KeyboardAvoidingView>
@@ -609,6 +601,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary,
     borderBottomColor: Colors.border,
     paddingBottom: Spacing.md,
+    paddingTop: Spacing.xxl,
   },
   header: {
     flexDirection: 'row',

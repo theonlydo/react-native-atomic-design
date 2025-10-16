@@ -14,26 +14,36 @@ interface FormInputProps {
   keyboardType?: 'default' | 'email-address' | 'numeric' | 'phone-pad';
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
   onBlur?: () => void;
+  size?: 'default' | 'small';
 }
 
 export const FormInput: React.FC<FormInputProps> = ({
   label,
   error,
   required = false,
+  size = 'default',
   ...inputProps
 }) => {
+  const isSmall = size === 'small';
+
   return (
     <View style={styles.container}>
       {label && (
         <>
-          <Text variant="body" weight="medium">
+          <Text
+            variant={isSmall ? 'small' : 'body'}
+            weight="medium">
             {label}
             {required && <Text color={Colors.error}> *</Text>}
           </Text>
           <Spacer size="xs" />
         </>
       )}
-      <Input error={!!error} {...inputProps} />
+      <Input
+        error={!!error}
+        style={isSmall && styles.smallInput}
+        {...inputProps}
+      />
       {error && (
         <>
           <Spacer size="xs" />
@@ -49,6 +59,12 @@ export const FormInput: React.FC<FormInputProps> = ({
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    backgroundColor: Colors.lightGray,
+    backgroundColor: Colors.gre,
+  },
+  smallInput: {
+    height: 40,
+    fontSize: 14,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
   },
 });

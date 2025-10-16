@@ -83,7 +83,7 @@ const MainTabs = () => {
         name="ContactList"
         component={ContactListScreen}
         options={{
-          title: 'Contacts',
+          headerShown: false,
           tabBarLabel: 'Contacts',
           tabBarIcon: ContactIcon,
         }}
