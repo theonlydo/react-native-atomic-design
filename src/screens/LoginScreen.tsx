@@ -19,7 +19,9 @@ import { Colors, Spacing } from '@constants';
 import { useAppDispatch } from '@hooks';
 import { setTokens } from '@store/reducer/authSlice';
 import { setCurrentUser } from '@store/reducer/userSlice';
+import { authApi } from '@services';
 import { isValidEmail } from '@utils';
+import { AppConfig } from '../config/env';
 
 interface LoginScreenProps {
   navigation: any;
@@ -47,7 +49,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const passwordError = useMemo(() => {
     if (!passwordTouched) return '';
     if (!password) return 'Password is required';
-    if (password.length < 6) return 'Password must be at least 6 characters';
+    if (password.length < 8) return 'Password must be at least 8 characters';
     return '';
   }, [password, passwordTouched]);
 
@@ -70,35 +72,79 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     try {
       setLoading(true);
 
-      // Simulate API call for now (akan diganti dengan real API nanti)
-      setTimeout(() => {
-        // Mock user data
-        const mockUser = {
-          id: 1,
-          email: email,
-          name: 'John Doe',
-          phone: '+1 234 567 8900',
-        };
-        const mockToken = 'mock-jwt-token-' + Date.now();
-        const mockRefreshToken = 'mock-refresh-token-' + Date.now();
+      console.log('=== LOGIN API CALL ===');
+      console.log('URL:', `${AppConfig.apiBaseUrl}${AppConfig.endpoints.auth.login}`);
+      console.log('Payload:', {
+        email: email,
+        password: '***',
+      });
 
-        // Save tokens to auth store
+      // Call real API
+      const response = await authApi.login({
+        email: email,
+        password: password,
+      });
+
+      console.log('Response received:', response);
+
+      if (response.status === 1 && response.data) {
+        console.log('Login success, saving token...');
+
+        // Save access token to auth store
         dispatch(
           setTokens({
-            token: mockToken,
-            refreshToken: mockRefreshToken,
+            token: response.data.token.access_token,
+            refreshToken: '', // No refresh token in response
           }),
         );
 
         // Save user data to user store
-        dispatch(setCurrentUser(mockUser));
+        dispatch(
+          setCurrentUser({
+            id: response.data.id,
+            email: response.data.email,
+            name: response.data.full_name,
+            phone: response.data.phone,
+          }),
+        );
 
-        setLoading(false);
-        // Navigation will happen automatically via AppNavigator
-      }, 1000);
+        Alert.alert('Success', 'Login successful!', [
+          {
+            text: 'OK',
+            onPress: () => {
+              // Navigation will happen automatically via AppNavigator
+            },
+          },
+        ]);
+      } else {
+        console.log('Login failed:', response.message);
+        Alert.alert('Error', response.message || 'Login failed');
+      }
+
+      setLoading(false);
     } catch (error: any) {
-      console.error('Login error:', error);
-      Alert.alert('Error', 'Failed to login. Please try again.');
+      console.error('=== LOGIN ERROR ===');
+      console.error('Full error:', error);
+      console.error('Error message:', error.message);
+      console.error('Error response:', error.response);
+      console.error('Error request:', error.request);
+
+      let errorMessage = 'Failed to login. Please try again.';
+
+      if (error.response) {
+        // Server responded with error
+        errorMessage = error.response.data?.message || `Server error: ${error.response.status}`;
+        console.error('Server error data:', error.response.data);
+      } else if (error.request) {
+        // Request made but no response
+        errorMessage = 'No response from server. Check your connection.';
+        console.error('No response received');
+      } else {
+        // Error in request setup
+        errorMessage = error.message || 'Request setup error';
+      }
+
+      Alert.alert('Error', errorMessage);
       setLoading(false);
     }
   };
